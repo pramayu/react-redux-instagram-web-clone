@@ -11,9 +11,9 @@ var relationships = require('../models/relationship');
 var app = express.Router();
 
 cloudinary.config({
-  cloud_name: 'foo',
-  api_key: '933274521521578',
-  api_secret: 'vNJ4wz7V5pAbSlBlCnjvBvFyXvo'
+  cloud_name: '[CLOUD_NAME]',
+  api_key: '[API_KEY]',
+  api_secret: '[API_SECRET]'
 });
 
 
