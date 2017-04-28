@@ -1,0 +1,214 @@
+<div className="img-left img-warghf">
+  { post.images.length > 1 ? multiple : single }
+  <div className="hover_"></div>
+</div>
+<div className="comment-right">
+  <div className="pps">
+    <ul className="list-inline">
+      <li><img src={user.avatar} alt="" /></li>
+      <li>
+        <p className="bgff">
+          {user.localAuth.username}
+        </p>
+      </li>
+    {/*  {{#ifequal ../user.id ../current_user.id}} */ }
+        <li className="pull-right vxc"><a href="/accounts/edit">Profile</a></li>
+    {/*  {{else}}
+        {{#checkFollow ../../user.followers ../../current_user.id}}
+          {{#ifequal value.follower.id ../../../current_user.id}}
+            <li className="pull-right vxc"><a>Following</a></li>
+          {{else}}
+            <li className="pull-right vxc"><a data-foobar={{../../../user.id}} id="foobar">Follow</a></li>
+          {{/ifequal}}
+        {{/checkFollow}}
+      {{/ifequal}} */}
+    </ul>
+  </div>
+  <div className="ppo">
+    <ul className="list-inline">
+      <li id="vote_length_{{id}}"></li>
+      <li className="pull-right fgh"><span><TimeAgo date={month + ' ' + dt + ',' + year}/></span></li>
+    </ul>
+  </div>
+  {/* comment */}
+</div>
+
+{ votes.length === 0 ? upvote : voting }
+
+
+
+
+
+
+
+
+
+const {errors, isValid} = validate(req.body);
+if(!isValid) {
+  res.status(400).json(errors);
+} else if (isValid) {
+    var email = req.body.email;
+    var username = req.body.username;
+    var password = req.body.password;
+    var fullname = req.body.fullname;
+    var token = randomstring.generate();
+    var host=req.get('host');
+    var link="http://"+req.get('host')+"/verify/"+token;
+    bcrypt.genSalt(10, function(err, salt) {
+      bcrypt.hash(password, salt, function(err, hash) {
+      var user = new users();
+      user.localAuth.email = email;
+      user.localAuth.username = username;
+      user.localAuth.fullname = fullname;
+      user.localAuth.password = hash;
+      user.localAuth.activation_token = token;
+      var emailOpts = {
+        from: '"Instagram" <clientservices@instagram.com>',
+        to: req.body.email,
+        subject: 'Activate Your Instagram Account',
+        html: "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
+      };
+      user.save(function(err) {
+        // if(!err) {
+        //   transporter.sendMail(emailOpts, function(err) {
+        //     if(err) {
+        //       console.log(err);
+        //       console.log(config.email.password)
+        //     }
+        //   })
+        // }
+      })
+    })
+  })
+}
+
+
+app.post('/', (req, res, next) => {
+  const {errors, isValid} = validate(req.body);
+  if(isValid) {
+    var email = req.body.email;
+    var username = req.body.username;
+    var password = req.body.password;
+    var fullname = req.body.fullname;
+    var token = randomstring.generate();
+    var host=req.get('host');
+    var link="http://"+req.get('host')+"/verify/"+token;
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, (err, hash) => {
+        var user = new users();
+        user.localAuth.email = email;
+        user.localAuth.username = username;
+        user.localAuth.fullname = fullname;
+        user.localAuth.password = hash;
+        user.localAuth.activation_token = token;
+        // var emailOpts = {
+        //   from: '"Instagram" <clientservices@instagram.com>',
+        //   to: req.body.email,
+        //   subject: 'Activate Your Instagram Account',
+        //   html: "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
+        // }
+        user.save((err) => {
+          // if(!err) {
+          //   transporter.sendMail(emailOpts, (err) => {
+          //   if(err) {
+          //       console.log(err);
+          //       console.log(config.email.password)
+          //     }
+          //   })
+          // }
+        })
+      })
+    })
+  }
+});
+
+return (
+  <li key={id}>
+    <p className="dfre">
+      <span className="userna">{ comment.user_id[0].localAuth.username }</span> {comment.comment}</p>
+  </li>
+)
+
+
+if(vote.user_id[0]._id === current_user.user.id && vote.post_id[0] === post._id) {
+  return (
+    <li className="vot downvote" key={id}>
+      <span className="lke" onClick={this.handleDelVote}></span>
+    </li>
+  )
+} else {
+  return (
+    <li className="vot upvote" key={id}>
+      <span className="lke" onClick={this.handleAddVote}></span>
+    </li>
+  )
+}
+
+
+let voting = (
+  votes.map((vote, id) => {
+    return (
+      <li className="vot" key={id}>
+        { vote.user_id[0]._id === current_user.user.id && vote.post_id[0] === post._id ?
+          <span className="lke del" onClick={this.handleDelVote}></span>
+          :
+          <span className="lke add" onClick={this.handleAddVote}></span>
+        }
+      </li>
+    )
+  })
+)
+
+
+// const comment = (
+//   this.props.comments.map((comment, id) => {
+//     if(comment.post_id[0] === post._id) {
+//       return (
+//         <li key={id}>
+//           <p className="dfre"><span className="userna">{ comment.user_id[0].localAuth.username }</span> {comment.comment}</p>
+//         </li>
+//       )
+//     }
+//   })
+// )
+
+comments.findOne({_id: id}, (err, comment) => {
+  if(comment.post_id.toString() === post_id && comment.user_id.toString() === user_id) {
+    comments.findByIdAndUpdate(id, { $set: {comment: req.body.comment}}, (err, result) => {
+      if(!err) {
+        comments.findOne({_id: result._id})
+        .populate('user_id', '_id avatar localAuth.username')
+        .exec(function(err, commentx) {
+          res.json({comment: commentx})
+        })
+      }
+    })
+  }
+})
+else if (_.includes(this.props.follower.follower_id, this.props.current_user.user.id)) {
+  button = isFollowing;
+} else {
+  button = isLogin;
+}
+
+app.post('/a81eb2ad2a1a1283f802/:current_user/following/:user_id/40a1c85568ae04617a97', (req, res, next) => {
+  var current_user = req.params.current_user;
+  var user_id = req.params.user_id;
+  relationships.find({user_id: user_id}, (err, relationship) => {
+    if(!_.isEmpty(relationship)) {
+      relationships.update({user_id: user_id}, {$push: {follower_id: current_user}}, (err, relationshipx) => {
+        relationships.findOne({user_id: req.params.user_id}, (err, relationshipz) => {
+          res.json({ relationship: relationshipz })
+        })
+      })
+    } else {
+      var relationship = new relationships();
+      relationship.follower_id = current_user;
+      relationship.user_id = user_id;
+      relationship.following_id = user_id;
+      relationship.save((err, relationshipx) => {
+        res.json({ relationship: relationshipx})
+      })
+    }
+  })
+})
