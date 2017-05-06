@@ -13,7 +13,7 @@ var app = express.Router();
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: '[EMAIL ADDRESS]',
+    user: 'dmonmad@gmail.com',
     pass: config.email.password
   }
 });
@@ -56,6 +56,9 @@ app.post('/f912ac38ddd196f4f6a1db0634394ff10915f0d38d3f3d5e72ec42ea6cc31828/sign
           transporter.sendMail(emailOpts, (err) => {
             if(err) {
               console.log(err)
+            }
+            if(!err) {
+              console.log('send')
             }
           })
         })

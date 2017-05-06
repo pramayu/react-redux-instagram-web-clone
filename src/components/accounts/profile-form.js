@@ -48,9 +48,21 @@ class ProfileForm extends Component {
     e.preventDefault();
     this.setState({ isLoading: true })
     this.props.setUserEdit(this.state, this.props.current_user.user.username).then(res => {
-      this.props.getUpdateToken(this.props.current_user.user.id).then(res => {
-        this.setState({isLoading: false})
-        location.reload();
+      this.props.getUpdateToken(this.props.current_user.user.id).then(resx => {
+        let that = this;
+        setTimeout(function () {
+          that.setState({
+            username: res.data.user.localAuth.username,
+            fullname: res.data.user.localAuth.fullname,
+            website: res.data.user.website,
+            bio: res.data.user.bio,
+            email: res.data.user.localAuth.email,
+            phone: res.data.user.phone,
+            gender: res.data.user.gender,
+            avatar: res.data.user.avatar,
+            isLoading: false
+          })
+        }, 500);
       })
     });
   }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import validator from 'validator';
-import aes from 'crypto-js';
+import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 
 import config from '../../../config/main';
@@ -38,7 +38,7 @@ class PassForm extends Component {
   }
 
   checkPassword() {
-    var encrypt = aes.AES.encrypt(this.state.old_password, config.secret_pass).toString();
+    var encrypt = jwt.sign({ token: this.state.old_password}, config.secret);
     this.props.checkPassword(this.props.current_user.user.id, encrypt).then(res => {
       this.setState({ success: res.data.success })
     })
@@ -84,9 +84,16 @@ class PassForm extends Component {
     if(this.isValid()) {
       this.setState({ isLoading: true })
       this.props.updateUserPassword(this.state, this.props.current_user.user.id).then(res => {
-        this.setState({ success: res.data.success, isLoading: false})
-        console.log(res.data)
-        console.log(this.state.isLoading)
+        let that = this;
+        setTimeout(function () {
+          that.setState({
+            success: res.data.success,
+            old_password: '',
+            new_password: '',
+            pass_confirm: '',
+            isLoading: false
+          })
+        }, 500);
       })
     }
   }

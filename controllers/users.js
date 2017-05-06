@@ -63,11 +63,10 @@ app.post('/refresh/:user_id/token', function(req, res, next) {
 app.get('/password/:user_id/check', (req, res, next) => {
   var id = req.params.user_id;
   var encrypt = req.query.token;
-  var bytes = aes.AES.decrypt(encrypt.toString(), config.secret_pass);
-  var password = bytes.toString(aes.enc.Utf8);
+  var password = jwt.decode(encrypt);
   users.findById(id, '_id username localAuth.password', (err, user) => {
     if(!_.isEmpty(user)) {
-      bcrypt.compare(password, user.localAuth.password, (err, isMatch) => {
+      bcrypt.compare(password.token, user.localAuth.password, (err, isMatch) => {
         if(!err && isMatch) {
           res.json({ success: true })
         } else {
@@ -123,7 +122,7 @@ app.get('/584c8be38c4d0/:identifier/reset', function (req, res, next) {
       user.localAuth.password_token = token;
       user.localAuth.password_reset = true;
       var emailOpts = {
-        from: '"Instagram" <clientservices@instagram.com>',
+        from: '"Khilogram" <clientservices@khilogram.com>',
         to: user.localAuth.email,
         subject: 'Reset Password',
         html: "Hello,<br> Please Click on the link to reset your password.<br><a href="+link+">Click here to reset</a>"
