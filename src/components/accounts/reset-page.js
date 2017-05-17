@@ -11,19 +11,19 @@ class PassReset extends Component {
               <div className="col-md-6 left-side">
                 <div className="slider_img">
                   <div className="this_list">
-                    <li><img src="//instagramstatic-a.akamaihd.net/h1/images/homepage/screenshot1.jpg/aafd8c6b005d.jpg" alt="" /></li>
-                    <li><img src="//instagramstatic-a.akamaihd.net/h1/images/homepage/screenshot2.jpg/2d9d7248af43.jpg" alt="" /></li>
-                    <li><img src="//instagramstatic-a.akamaihd.net/h1/images/homepage/screenshot3.jpg/629d23a3c7b2.jpg" alt="" /></li>
-                    <li><img src="//instagramstatic-a.akamaihd.net/h1/images/homepage/screenshot4.jpg/001bc33056c1.jpg" alt="" /></li>
-                    <li><img src="//instagramstatic-a.akamaihd.net/h1/images/homepage/screenshot5.jpg/f5ae123ab1e2.jpg" alt="" /></li>
+                    <li><img src="/images/sliders/aafd8c6b005d.jpg" alt="" /></li>
+                    <li><img src="/images/sliders/2d9d7248af43.jpg" alt="" /></li>
+                    <li><img src="/images/sliders/629d23a3c7b2.jpg" alt="" /></li>
+                    <li><img src="/images/sliders/001bc33056c1.jpg" alt="" /></li>
+                    <li><img src="/images/sliders/f5ae123ab1e2.jpg" alt="" /></li>
                   </div>
                 </div>
               </div>
               <div className="col-md-5 right-side">
                 <div id="form-login">
                   <div className="login-frm">
-                    <div className="title-inst">
-                    </div>
+                    {/* <div className="title-inst"></div> */}
+                    <div className="title-inst2"><span className="nj">_Khilogram.</span></div>
                     { this.props.children }
                   </div>
                   <div className="sign_up_switch">

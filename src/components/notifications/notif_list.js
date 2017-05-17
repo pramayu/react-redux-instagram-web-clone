@@ -49,7 +49,7 @@ class NotifList extends Component {
 
     let tertw = (
       <a href="#" className="tro">
-        <div className="bg_im" style={{backgroundImage: 'url(' +notif.user_id[0].avatar+ ')'}}></div>
+        <div className="bg_im" style={{backgroundImage: 'url(' +notif.notified_by[0].avatar+ ')'}}></div>
         { started }
         <div className="cmt_id">
           { notif.comment_id.length === 0 ? caption : <span className="captr">{notif.comment_id[0].comment}</span> }
